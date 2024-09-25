@@ -12,7 +12,7 @@
 provider "aws" {
  # Region is a required parameter
  # Define 'us-east-2' as the region
- region = "us-east-2"
+ region = var.region
 }
 
 /*  
@@ -87,6 +87,9 @@ locals {
 # Modules are great for code reuse.
 module "networking" {
   source = "github.com/hashicorp/terraform-aws-webapp-networking?ref=v1.0.0"
+  region = var.region
+  prefix = "${var.prefix}-network"
+  tags = local.standard_tags
   # Pass the required variables  for the module
   # https://github.com/hashicorp/terraform-aws-webapp-networking/blob/main/variables.tf
    
@@ -98,12 +101,12 @@ module "networking" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
 resource "aws_instance" "tflabs" {
   #Hint: reference the AMI data source ID from above
-  ami           =
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   # Hint: https://github.com/hashicorp/terraform-aws-webapp-networking/blob/main/outputs.tf
-  subnet_id =
+  subnet_id = module.networking.subnet_id
   tags = {
       # Use a Terraform function to set the created value to a current timestamp
-      created =
+      created = timestamp()
   }
 }

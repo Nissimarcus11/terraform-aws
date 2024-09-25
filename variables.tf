@@ -17,10 +17,10 @@ variable "prefix" {
 #     # Set both a description and default value
 # }
 
-# variable "region" {
-#     # Follow the example above to declare this variable
-#     # Set both a description and default value
-# }
+variable "region" {
+    # Follow the example above to declare this variable
+    # Set both a description and default value
+}
 
 variable "vpc_cidr" {
     # Follow the example above to declare this variable
