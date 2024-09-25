@@ -37,8 +37,18 @@ provider "aws" {
 resource "aws_vpc" "tflabs" {
   # Fill in the required parameters
   # Reference the notes and URL above for syntax
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr
   tags = {
-    
+    "Name" = "tflabs-vpc"
+    "environment" = "development"
+  }
+}
+resource "aws_subnet" "tflabs-subnet" {
+  vpc_id     = aws_vpc.tflabs.id
+  cidr_block = var.subnet_cidr
+
+  tags = {
+    "Name" = "${var.prefix}-subnet"
+    "environment" = "development"
   }
 }
